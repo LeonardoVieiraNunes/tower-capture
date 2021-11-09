@@ -1,5 +1,7 @@
 import pygame
 from Controladora import Controladora
+from Entidade import Entidade
+from Casa import Casa
 
 class Mapa:
     def __init__(self):
@@ -11,8 +13,16 @@ class Mapa:
             pygame.transform.scale(pygame.image.load("./images/tile2.png"),(180,500)), (180,500))
         self.setup()
     
-    def swapPositions(self):
-        pass
+    def swapPositions(self,fromTarget,toTarget):
+        # print(fromTarget.entidade.getId())
+        # print(toTarget.entidade.getId())
+
+        fromTarget.entidade, toTarget.entidade = toTarget.entidade, fromTarget.entidade
+        
+        if fromTarget.entidade:
+            fromTarget.entidade.gridConfig = fromTarget.dimensions
+        if toTarget.entidade:
+            toTarget.entidade.gridConfig = toTarget.dimensions
     
     def setup(self):
         Controladora.GAME.WINDOW.blit(self.backgroundImage, (0, 0))
@@ -21,7 +31,7 @@ class Mapa:
                 tempConfig = self.gridConfig.copy()
                 tempConfig["x"] += i*tempConfig["size"][0]
                 tempConfig["y"] += j*tempConfig["size"][1]
-                self.grid.add(Entidade(tempConfig,(i*9)+j))
+                self.grid.add(Casa(tempConfig,(i*9)+j))
     
     def drawSideBar(self):
         Controladora.GAME.WINDOW.blit(self.backgroundImageShop, (0, 0))
@@ -43,5 +53,3 @@ class Mapa:
     def mouseHover(self):
         for i in self.grid.sprites():
             i.checkHover(self.mousePos)
-
-from Entidade import Entidade

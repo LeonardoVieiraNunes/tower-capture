@@ -1,11 +1,74 @@
+import pygame
+from Controladora import Controladora
+from Entidade import Entidade
+from random import randint
 
-class Casa:
-    def __init__(self,id,casaConfig):
-        self.id = id
+class Casa(pygame.sprite.Sprite):
+    casaSelecionada = None
+
+    def __init__(self,dimensions,id):
+        super().__init__()
+        self.dimensions = dimensions
+        self.id = "C-"+str(id)
         self.entidade = None
+        self.color = (100,100,100)
+        self.image = pygame.transform.scale(
+            pygame.transform.scale(pygame.image.load("./images/tile2.png"),dimensions["size"]), dimensions["size"])
+        self.rect = self.image.get_rect()
+        self.rect.x = dimensions["x"]
+        self.rect.y = dimensions["y"]
+        self.clicked = False
+
+    def draw(self):
+        Controladora.GAME.WINDOW.blit(self.image,(self.rect.x,self.rect.y))
+        pygame.draw.rect(Controladora.GAME.WINDOW,self.color,(self.dimensions["x"],self.dimensions["y"],self.dimensions["size"][0],self.dimensions["size"][1]),1)
+        if self.entidade:
+            self.entidade.draw()
+
+    def checkCollision(self,mousePos):
+        if(self.rect.collidepoint(mousePos)):
+            return True
+        return False
     
-    def getEntidade(self):
-        return self.entidade
+    def checkClick(self,mousePos,event):
+        if(self.checkCollision(mousePos)):
+            if(event.button == 3):
+                if not self.entidade:
+                    self.entidade = Entidade(self.dimensions,"E-"+str(randint(0,1000)))
+            elif(event.button == 2):
+                if self.entidade:
+                    print(f"{self.entidade.getId()} ", end="")
+                print(self.id)
+            elif(event.button == 1):
+                if Casa.casaSelecionada:
+                    if Casa.casaSelecionada.id == self.id:
+                        print(f"Repetiu clique em {self.id}, desativou")
+                        self.clicked = False
+                        Casa.casaSelecionada = None
+                    else:
+
+                        Controladora.GAME.mapaAtual.swapPositions(Casa.casaSelecionada,self)
+
+                        Casa.casaSelecionada.clicked = False
+                        print(f"Ativar mudanca de rota de {Casa.casaSelecionada.id} para {self.id}")
+                        Casa.casaSelecionada = None
+                        self.clicked = False
+                else:
+                    print(f"Clique inicial em {self.id}")
+                    self.clicked = True
+                    Casa.casaSelecionada = self
     
-    def setEntidade(self,entidade):
-        self.entidade = entidade
+    def checkHover(self, mousePos):
+        if self.entidade:
+            if not self.clicked:
+                if(self.checkCollision(mousePos)):
+                    self.entidade.handleHover("hover")
+                else:
+                    self.entidade.handleHover("notHover")
+            else:
+                self.entidade.handleHover("clicked")
+        else:
+            if(self.checkCollision(mousePos)):
+                self.color = (255,255,255)
+            else:
+                self.color = (100,100,100)

@@ -20,7 +20,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.run = False
-                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                elif event.type == pygame.MOUSEBUTTONDOWN and (event.button == 1 or event.button == 3 or event.button == 2):
                     self.mapaAtual.mouseClick(event)
 
             self.mapaAtual.mouseHover()
