@@ -1,5 +1,6 @@
+from Controladora import Controladora
 from Game import Game
 
 if __name__ == "__main__":
-    game = Game()
-    game.setup()
+    Controladora.GAME = Game()
+    Controladora.GAME.setup()

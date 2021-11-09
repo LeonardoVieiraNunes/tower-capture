@@ -1,26 +1,27 @@
 import pygame
 
 class Game:
-    SCREENSIZE = {"width":900,"height":500}
-    WINDOW = pygame.display.set_mode((SCREENSIZE["width"],SCREENSIZE["height"]))
-    CLOCK = pygame.time.Clock()
-    FPS = 24
-    
     def __init__(self):
+        self.SCREENSIZE = {"width":900,"height":500}
+        self.WINDOW = pygame.display.set_mode((self.SCREENSIZE["width"],self.SCREENSIZE["height"]))
+        self.CLOCK = pygame.time.Clock()
+        self.FPS = 24
         self.run = True
-        self.mapaAtual = Mapa()
+        self.mapaAtual = None
 
     def setup(self):
         pygame.display.set_caption("Tower Capture!")
 
+        self.mapaAtual = Mapa()
+
         while self.run:
-            Game.CLOCK.tick(Game.FPS)
+            self.CLOCK.tick(self.FPS)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.run = False
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    self.mapaAtual.mouseClick()
+                    self.mapaAtual.mouseClick(event)
 
             self.mapaAtual.mouseHover()
             self.mapaAtual.draw()
