@@ -1,5 +1,5 @@
 import pygame
-
+from Jogador import Jogador
 class Game:
     def __init__(self):
         self.SCREENSIZE = {"width":900,"height":500}
@@ -25,6 +25,13 @@ class Game:
 
             self.mapaAtual.mouseHover()
             self.mapaAtual.draw()
+
+
+
+            self.jogador1 = Jogador([],1)
+            self.jogador2 = Jogador([],2)
+
+
 
             pygame.display.update()
             
