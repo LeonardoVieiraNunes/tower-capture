@@ -1,6 +1,9 @@
 import pygame
 from Jogador import Jogador
+
+
 class Game:
+
     def __init__(self):
         self.SCREENSIZE = {"width":900,"height":500}
         self.WINDOW = pygame.display.set_mode((self.SCREENSIZE["width"],self.SCREENSIZE["height"]))
