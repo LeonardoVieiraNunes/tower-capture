@@ -1,6 +1,12 @@
 import pygame
 from Jogador import Jogador
+from Arqueiro import Arqueiro
+from Guerreiro import Guerreiro
+from Escudeiro import Escudeiro
+from Entidade import Entidade
+
 class Game:
+
     def __init__(self):
         self.SCREENSIZE = {"width":900,"height":500}
         self.WINDOW = pygame.display.set_mode((self.SCREENSIZE["width"],self.SCREENSIZE["height"]))
@@ -8,11 +14,78 @@ class Game:
         self.FPS = 24
         self.run = True
         self.mapaAtual = None
+        self.jogador1 = None
+        self.jogador2 = None
 
     def setup(self):
         pygame.display.set_caption("Tower Capture!")
 
         self.mapaAtual = Mapa()
+
+        # posicoes iniciais e configs
+        # modelo de posicao: (linha,coluna)
+        pos_arqueiro_p1 = (1, 2)
+        config_arqueiro_p1 = {"x": 225 + pos_arqueiro_p1[1] * 70, "y": 135 + pos_arqueiro_p1[0] * 70, "size": (70, 70)}
+        pos_escudeiro_p1 = (2, 3)
+        config_escudeiro_p1 = {"x": 225 + pos_escudeiro_p1[1] * 70, "y": 135 + pos_escudeiro_p1[0] * 70,
+                               "size": (70, 70)}
+        pos_guerreiro_p1 = (3, 2)
+        config_guerreiro_p1 = {"x": 225 + pos_guerreiro_p1[1] * 70, "y": 135 + pos_guerreiro_p1[0] * 70,
+                               "size": (70, 70)}
+        pos_torre_p1 = (2, 1)
+        config_torre_p1 = {"x": 225 + pos_torre_p1[1] * 70, "y": 135 + pos_torre_p1[0] * 70, "size": (70, 70)}
+
+        # instancias de personagens
+        arqueiro_p1 = Arqueiro(config_arqueiro_p1, 1)
+        escudeiro_p1 = Escudeiro(config_escudeiro_p1, 2)
+        guerreiro_p1 = Guerreiro(config_guerreiro_p1, 3)
+        # Classe de torre ainda não implementada
+        torre_p1 = Entidade(config_torre_p1, 4)
+
+        # Adiciona personagens ao mapa
+        self.mapaAtual.addEntityToPosition(pos_arqueiro_p1, arqueiro_p1)
+        self.mapaAtual.addEntityToPosition(pos_escudeiro_p1, escudeiro_p1)
+        self.mapaAtual.addEntityToPosition(pos_guerreiro_p1, guerreiro_p1)
+        self.mapaAtual.addEntityToPosition(pos_torre_p1, torre_p1)
+
+        self.jogador1 = Jogador([arqueiro_p1, escudeiro_p1, guerreiro_p1, torre_p1], 1)
+
+        pos_arqueiro_p2 = (1, 6)
+        config_arqueiro_p2 = {"x": 225 + pos_arqueiro_p2[1] * 70, "y": 135 + pos_arqueiro_p2[0] * 70, "size": (70, 70)}
+        pos_escudeiro_p2 = (2, 5)
+        config_escudeiro_p2 = {"x": 225 + pos_escudeiro_p2[1] * 70, "y": 135 + pos_escudeiro_p2[0] * 70,
+                               "size": (70, 70)}
+        pos_guerreiro_p2 = (3, 6)
+        config_guerreiro_p2 = {"x": 225 + pos_guerreiro_p2[1] * 70, "y": 135 + pos_guerreiro_p2[0] * 70,
+                               "size": (70, 70)}
+        pos_torre_p2 = (2, 7)
+        config_torre_p2 = {"x": 225 + pos_torre_p2[1] * 70, "y": 135 + pos_torre_p2[0] * 70, "size": (70, 70)}
+
+        arqueiro_p2 = Arqueiro(config_arqueiro_p2, 5)
+        escudeiro_p2 = Escudeiro(config_escudeiro_p2, 6)
+        guerreiro_p2 = Guerreiro(config_guerreiro_p2, 7)
+        torre_p2 = Entidade(config_torre_p2, 8)
+
+        self.mapaAtual.addEntityToPosition(pos_arqueiro_p2, arqueiro_p2)
+        self.mapaAtual.addEntityToPosition(pos_escudeiro_p2, escudeiro_p2)
+        self.mapaAtual.addEntityToPosition(pos_guerreiro_p2, guerreiro_p2)
+        self.mapaAtual.addEntityToPosition(pos_torre_p2, torre_p2)
+
+        self.jogador2 = Jogador([arqueiro_p2, escudeiro_p2, guerreiro_p2, torre_p2], 2)
+        '''
+        arqueiro-p1 (1,2)
+        escudeiro-p1 (2,3)
+        guerreiro-p1 (3,2)
+        torre-p1 (2,1)
+
+
+        arqueiro-p2 (1,6)
+        escudeiro-p2 (2, 5)
+        guerreiro-p2 (3,6)
+        torre-p2 (2,7)
+
+        '''
+
 
         while self.run:
             self.CLOCK.tick(self.FPS)
@@ -28,8 +101,11 @@ class Game:
 
 
 
-            self.jogador1 = Jogador([],1)
-            self.jogador2 = Jogador([],2)
+
+
+
+
+
 
 
 
