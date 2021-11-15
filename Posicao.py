@@ -3,7 +3,7 @@ from Controladora import Controladora
 from Entidade import Entidade
 from random import randint
 
-class Posicao(pygame.sprite.Sprite):
+class Posicao():
     casaSelecionada = None
 
     def __init__(self,dimensions,id):
@@ -11,7 +11,9 @@ class Posicao(pygame.sprite.Sprite):
         self.dimensions = dimensions
         self.id = "C-"+str(id)
         self.entidade = None
-        self.color = (100,100,100)
+        self.colorNotOcupied = (100,100,100)
+        self.colorOcupied = (0,0,255)
+        self.color = self.colorNotOcupied
         self.image = pygame.transform.scale(
             pygame.transform.scale(pygame.image.load("./images/tile2.png"),dimensions["size"]), dimensions["size"])
         self.rect = self.image.get_rect()
@@ -40,7 +42,7 @@ class Posicao(pygame.sprite.Sprite):
                     self.entidade = Entidade(self.dimensions,"E-"+str(randint(0,1000)))
             elif(event.button == 2):
                 if self.entidade:
-                    print(f"{self.entidade.getId()} ", end="")
+                    print(f"{self.entidade.owner.id} ", end="")
                 print(self.id)
             elif(event.button == 1):
                 if Posicao.casaSelecionada:
@@ -62,16 +64,17 @@ class Posicao(pygame.sprite.Sprite):
                     Posicao.casaSelecionada = self
     
     def checkHover(self, mousePos):
-        if self.entidade:
-            if not self.clicked:
-                if(self.checkCollision(mousePos)):
-                    self.entidade.handleHover("hover")
-                else:
-                    self.entidade.handleHover("notHover")
-            else:
-                self.entidade.handleHover("clicked")
-        else:
-            if(self.checkCollision(mousePos)):
-                self.color = (255,255,255)
-            else:
-                self.color = (100,100,100)
+        # if self.entidade:
+        #     if not self.clicked:
+        #         if(self.checkCollision(mousePos)):
+        #             self.entidade.handleHover("hover")
+        #         else:
+        #             self.entidade.handleHover("notHover")
+        #     else:
+        #         self.entidade.handleHover("clicked")
+        # else:
+        #     if(self.checkCollision(mousePos)):
+        #         self.color = (255,255,255)
+        #     else:
+        #         self.color = (100,100,100)
+        pass

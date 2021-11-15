@@ -1,6 +1,4 @@
-import pygame
-from Controladora import Controladora
-from random import randint
+
 from Entidade import Entidade
 
 class Personagem(Entidade):

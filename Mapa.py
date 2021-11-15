@@ -1,6 +1,5 @@
 import pygame
 from Controladora import Controladora
-from Entidade import Entidade
 from Posicao import Posicao
 
 class Mapa:
@@ -14,9 +13,6 @@ class Mapa:
         self.setup()
 
     def swapPositions(self,fromTarget,toTarget):
-        # print(fromTarget.entidade.getId())
-        # print(toTarget.entidade.getId())
-
         fromTarget.entidade, toTarget.entidade = toTarget.entidade, fromTarget.entidade
 
         if fromTarget.entidade:

@@ -1,9 +1,10 @@
 import pygame
-from Personagem import Personagem
+# from Personagem import Personagem
+from Entidade import Entidade
 
-class Escudeiro(Personagem):
-    def __init__(self, gridConfig, id):
-        super().__init__(gridConfig, id)
+class Escudeiro(Entidade):
+    def __init__(self, gridConfig, id, owner):
+        super().__init__(gridConfig, id, owner)
 
         self.vida = 30
         self.ataque = 20

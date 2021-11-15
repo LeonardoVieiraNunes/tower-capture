@@ -2,16 +2,16 @@ import pygame
 # from Personagem import Personagem
 from Entidade import Entidade
 
-class Guerreiro(Entidade):
+class Torre(Entidade):
     def __init__(self, gridConfig, id, owner):
         super().__init__(gridConfig, id, owner)
-        image_path ='images/guerreiro_idle.png'
+        image_path ='images/shaded grid.png'
 
-        self.vida = 40
-        self.ataque = 30
-        self.defesa = 15
-        self.range_movimentacao = 4
-        self.range_ataque = 2
+        self.vida = 99
+        self.ataque = 99
+        self.defesa = 99
+        self.range_movimentacao = 2
+        self.range_ataque = 4
 
         self.image = pygame.image.load(image_path)
         self.size = self.image.get_size()
