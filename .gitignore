@@ -1,3 +1,5 @@
 /.idea
 /venv
 /__pycache__
+/modelagem/*.vpp.lck
+/modelagem/*.vpp.bak*
