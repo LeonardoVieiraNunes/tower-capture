@@ -1,7 +1,7 @@
 import pygame
 from Controladora import Controladora
 from Entidade import Entidade
-from Casa import Casa
+from Posicao import Posicao
 
 class Mapa:
     def __init__(self):
@@ -31,7 +31,7 @@ class Mapa:
                 tempConfig = self.gridConfig.copy()
                 tempConfig["x"] += j*tempConfig["size"][0]
                 tempConfig["y"] += i*tempConfig["size"][1]
-                self.grid[i][j] = Casa(tempConfig,(i*9)+j)
+                self.grid[i][j] = Posicao(tempConfig, (i*9)+j)
         return
     def drawSideBar(self):
         Controladora.GAME.WINDOW.blit(self.backgroundImageShop, (0, 0))
@@ -56,3 +56,6 @@ class Mapa:
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
                 self.grid[i][j].checkHover(self.mousePos)
+
+    def addEntityToPosition(self,pos:tuple,entity):
+        self.grid[pos[0]][pos[1]].setEntidade(entity)

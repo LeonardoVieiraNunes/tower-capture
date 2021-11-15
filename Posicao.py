@@ -3,7 +3,7 @@ from Controladora import Controladora
 from Entidade import Entidade
 from random import randint
 
-class Casa(pygame.sprite.Sprite):
+class Posicao(pygame.sprite.Sprite):
     casaSelecionada = None
 
     def __init__(self,dimensions,id):
@@ -29,7 +29,10 @@ class Casa(pygame.sprite.Sprite):
         if(self.rect.collidepoint(mousePos)):
             return True
         return False
-    
+
+    def setEntidade(self,entidade:Entidade):
+        self.entidade = entidade
+
     def checkClick(self,mousePos,event):
         if(self.checkCollision(mousePos)):
             if(event.button == 3):
@@ -40,23 +43,23 @@ class Casa(pygame.sprite.Sprite):
                     print(f"{self.entidade.getId()} ", end="")
                 print(self.id)
             elif(event.button == 1):
-                if Casa.casaSelecionada:
-                    if Casa.casaSelecionada.id == self.id:
+                if Posicao.casaSelecionada:
+                    if Posicao.casaSelecionada.id == self.id:
                         print(f"Repetiu clique em {self.id}, desativou")
                         self.clicked = False
-                        Casa.casaSelecionada = None
+                        Posicao.casaSelecionada = None
                     else:
 
-                        Controladora.GAME.mapaAtual.swapPositions(Casa.casaSelecionada,self)
+                        Controladora.GAME.mapaAtual.swapPositions(Posicao.casaSelecionada,self)
 
-                        Casa.casaSelecionada.clicked = False
-                        print(f"Ativar mudanca de rota de {Casa.casaSelecionada.id} para {self.id}")
-                        Casa.casaSelecionada = None
+                        Posicao.casaSelecionada.clicked = False
+                        print(f"Ativar mudanca de rota de {Posicao.casaSelecionada.id} para {self.id}")
+                        Posicao.casaSelecionada = None
                         self.clicked = False
                 else:
                     print(f"Clique inicial em {self.id}")
                     self.clicked = True
-                    Casa.casaSelecionada = self
+                    Posicao.casaSelecionada = self
     
     def checkHover(self, mousePos):
         if self.entidade:
