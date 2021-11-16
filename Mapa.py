@@ -2,9 +2,7 @@ import pygame
 from Controladora import Controladora
 from Posicao import Posicao
 
-class Mapa:
-    posicaoSelecionada = None
-
+class Mapa():
     def __init__(self):
         self.grid = [[None for i in range(9)] for j in range(5)]
         self.gridConfig = {"x":225,"y":135,"size":(70,70)}
@@ -13,9 +11,14 @@ class Mapa:
         self.backgroundImageShop = pygame.transform.scale(
             pygame.transform.scale(pygame.image.load("./images/tile2.png"),(180,500)), (180,500))
         self.posicoesValidas = None
+        self.posicaoSelecionada = None
         self.setup()
     
-    def resetPosicoesValidas(self):
+    def resetPosicoesValidas(self, posicao = None):
+        Controladora.GAME.mapaAtual.posicaoSelecionada.clicked = False
+        Controladora.GAME.mapaAtual.posicaoSelecionada = None
+        if posicao:
+            posicao.clicked = False
         self.posicoesValidas = None
 
     def getValidPositionsForMovement(self):
@@ -40,13 +43,14 @@ class Mapa:
                             print("Exception")
             posicoesValidas = posicoesValidasTemp
 
-        # for indexI,i in enumerate(posicoesValidas):
-        #     for indexJ,j in enumerate(i):
-        #         if j < posicaoTemp.entidade.range_movimentacao:
-        #             self.grid[indexI][indexJ].color = (255,0,0)
         self.posicoesValidas = posicoesValidas              
 
 
+    def validForSwapPositions(self,fromTarget,toTarget):
+        if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao:           
+            return True
+        return False
+    
     def swapPositions(self,fromTarget,toTarget):
         if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao:
             fromTarget.entidade, toTarget.entidade = toTarget.entidade, fromTarget.entidade
@@ -56,7 +60,6 @@ class Mapa:
             if toTarget.entidade:
                 toTarget.entidade.gridConfig = toTarget.dimensions
             
-            self.resetPosicoesValidas()
             return True
         return False
 

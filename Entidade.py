@@ -16,19 +16,12 @@ class Entidade():
         self.size = self.image.get_size()
         self.image = pygame.transform.scale(self.image, (int(self.size[0] * 2.1), int(self.size[1] * 2)))
     
-    # def movimentar(self):
-
+    def movimentar(self, posicao):
+        Controladora.GAME.mapaAtual.swapPositions(Controladora.GAME.mapaAtual.posicaoSelecionada,posicao)
+        Controladora.GAME.mapaAtual.resetPosicoesValidas(posicao)
 
     def draw(self):
         Controladora.GAME.WINDOW.blit(self.image, (self.gridConfig["x"],self.gridConfig["y"]))
 
     def getId(self):
         return self.id
-    
-    # def handleHover(self,reset):
-    #     if reset == "notHover":
-    #         self.color = self.originalColor
-    #     elif reset == "hover":
-    #         self.color = (255,255,255)
-    #     else:
-    #         self.color = (0,0,0)

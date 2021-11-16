@@ -1,7 +1,6 @@
 import pygame
 from Controladora import Controladora
 from Entidade import Entidade
-from random import randint
 
 class Posicao():
 
@@ -45,29 +44,21 @@ class Posicao():
 
     def checkClick(self,mousePos,event):
         if(self.checkCollision(mousePos)):
-            if(event.button == 3):
-                if not self.entidade:
-                    self.entidade = Entidade(self.dimensions,"E-"+str(randint(0,1000)))
-            elif(event.button == 2):
+            if event.button == 2:
                 if self.entidade:
                     print(f"{self.entidade.id} ", end="")
                 print(self.id)
-            elif(event.button == 1):
+            elif event.button == 1:
                 if Controladora.GAME.mapaAtual.posicaoSelecionada:
                     if Controladora.GAME.mapaAtual.posicaoSelecionada.id == self.id:
-                        print(f"Repetiu clique em {self.id}, desativou")
                         self.clicked = False
                         Posicao.casaSelecionada = None
                         Controladora.GAME.mapaAtual.resetPosicoesValidas()
                     else:
-                        if Controladora.GAME.mapaAtual.swapPositions(Controladora.GAME.mapaAtual.posicaoSelecionada,self):
-                            Controladora.GAME.mapaAtual.posicaoSelecionada.clicked = False
-                            print(f"Ativar mudanca de rota de {Controladora.GAME.mapaAtual.posicaoSelecionada.id} para {self.id}")
-                            Controladora.GAME.mapaAtual.posicaoSelecionada = None
-                            self.clicked = False
+                        if Controladora.GAME.mapaAtual.validForSwapPositions(Controladora.GAME.mapaAtual.posicaoSelecionada,self):
+                            Controladora.GAME.mapaAtual.posicaoSelecionada.entidade.movimentar(self)
                 else:
                     if self.entidade:
-                        print(f"Clique inicial em {self.id}")
                         self.clicked = True
                         Controladora.GAME.mapaAtual.posicaoSelecionada = self
                         Controladora.GAME.mapaAtual.getValidPositionsForMovement()

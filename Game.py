@@ -74,21 +74,6 @@ class Game:
         self.jogador2.setEntidades([arqueiro_p2, escudeiro_p2, guerreiro_p2, torre_p2])
 
 
-        '''
-        arqueiro-p1 (1,2)
-        escudeiro-p1 (2,3)
-        guerreiro-p1 (3,2)
-        torre-p1 (2,1)
-
-
-        arqueiro-p2 (1,6)
-        escudeiro-p2 (2, 5)
-        guerreiro-p2 (3,6)
-        torre-p2 (2,7)
-
-        '''
-
-
         while self.run:
             self.CLOCK.tick(self.FPS)
 
