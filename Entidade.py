@@ -15,6 +15,9 @@ class Entidade():
         self.image = pygame.image.load(image_path)
         self.size = self.image.get_size()
         self.image = pygame.transform.scale(self.image, (int(self.size[0] * 2.1), int(self.size[1] * 2)))
+    
+    # def movimentar(self):
+
 
     def draw(self):
         Controladora.GAME.WINDOW.blit(self.image, (self.gridConfig["x"],self.gridConfig["y"]))

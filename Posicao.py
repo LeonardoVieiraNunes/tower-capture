@@ -4,12 +4,12 @@ from Entidade import Entidade
 from random import randint
 
 class Posicao():
-    casaSelecionada = None
 
-    def __init__(self,dimensions,id):
+    def __init__(self,dimensions, matrixLocation):
         super().__init__()
         self.dimensions = dimensions
-        self.id = "C-"+str(id)
+        self.matrixLocation = matrixLocation
+        self.id = "C-"+str((matrixLocation[0]*9)+matrixLocation[1])
         self.entidade = None
         self.colorNotOcupied = (100,100,100)
         self.colorOcupied = (0,0,255)
@@ -22,6 +22,14 @@ class Posicao():
         self.clicked = False
 
     def draw(self):
+        if Controladora.GAME.mapaAtual.posicoesValidas:
+            if Controladora.GAME.mapaAtual.posicoesValidas[self.matrixLocation[0]][self.matrixLocation[1]] != 9:
+                self.color = (0,255,0)
+            else:
+                self.color = (100,100,100)
+        else:
+            self.color = (100,100,100)
+
         Controladora.GAME.WINDOW.blit(self.image,(self.rect.x,self.rect.y))
         pygame.draw.rect(Controladora.GAME.WINDOW,self.color,(self.dimensions["x"],self.dimensions["y"],self.dimensions["size"][0],self.dimensions["size"][1]),1)
         if self.entidade:
@@ -42,26 +50,27 @@ class Posicao():
                     self.entidade = Entidade(self.dimensions,"E-"+str(randint(0,1000)))
             elif(event.button == 2):
                 if self.entidade:
-                    print(f"{self.entidade.owner.id} ", end="")
+                    print(f"{self.entidade.id} ", end="")
                 print(self.id)
             elif(event.button == 1):
-                if Posicao.casaSelecionada:
-                    if Posicao.casaSelecionada.id == self.id:
+                if Controladora.GAME.mapaAtual.posicaoSelecionada:
+                    if Controladora.GAME.mapaAtual.posicaoSelecionada.id == self.id:
                         print(f"Repetiu clique em {self.id}, desativou")
                         self.clicked = False
                         Posicao.casaSelecionada = None
+                        Controladora.GAME.mapaAtual.resetPosicoesValidas()
                     else:
-
-                        Controladora.GAME.mapaAtual.swapPositions(Posicao.casaSelecionada,self)
-
-                        Posicao.casaSelecionada.clicked = False
-                        print(f"Ativar mudanca de rota de {Posicao.casaSelecionada.id} para {self.id}")
-                        Posicao.casaSelecionada = None
-                        self.clicked = False
+                        if Controladora.GAME.mapaAtual.swapPositions(Controladora.GAME.mapaAtual.posicaoSelecionada,self):
+                            Controladora.GAME.mapaAtual.posicaoSelecionada.clicked = False
+                            print(f"Ativar mudanca de rota de {Controladora.GAME.mapaAtual.posicaoSelecionada.id} para {self.id}")
+                            Controladora.GAME.mapaAtual.posicaoSelecionada = None
+                            self.clicked = False
                 else:
-                    print(f"Clique inicial em {self.id}")
-                    self.clicked = True
-                    Posicao.casaSelecionada = self
+                    if self.entidade:
+                        print(f"Clique inicial em {self.id}")
+                        self.clicked = True
+                        Controladora.GAME.mapaAtual.posicaoSelecionada = self
+                        Controladora.GAME.mapaAtual.getValidPositionsForMovement()
     
     def checkHover(self, mousePos):
         # if self.entidade:

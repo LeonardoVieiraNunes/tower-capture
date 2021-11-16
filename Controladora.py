@@ -4,5 +4,3 @@ class Controladora:
 
     def __init__(self):
         Controladora.GAME.setup()
-
-        
