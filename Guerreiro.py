@@ -1,9 +1,10 @@
 import pygame
-from Personagem import Personagem
+# from Personagem import Personagem
+from Entidade import Entidade
 
-class Guerreiro(Personagem):
-    def __init__(self, gridConfig, id):
-        super().__init__(gridConfig, id)
+class Guerreiro(Entidade):
+    def __init__(self, gridConfig, id, idJogador):
+        super().__init__(gridConfig, id, idJogador)
         image_path ='images/guerreiro_idle.png'
 
         self.vida = 40
