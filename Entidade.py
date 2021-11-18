@@ -2,9 +2,9 @@ import pygame
 from Controladora import Controladora
 
 class Entidade():
-    def __init__(self, gridConfig, id, owner):
+    def __init__(self, gridConfig, id, idJogador):
         super().__init__()
-        self.owner = owner
+        self.idJogador = idJogador
         self.id = id
         self.gridConfig = gridConfig
         self.originalColor = (0,0,255)

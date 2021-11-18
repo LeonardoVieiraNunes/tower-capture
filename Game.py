@@ -38,11 +38,11 @@ class Game:
         config_torre_p1 = {"x": 225 + pos_torre_p1[1] * 70, "y": 135 + pos_torre_p1[0] * 70, "size": (70, 70)}
 
         # instancias de personagens
-        arqueiro_p1 = Arqueiro(config_arqueiro_p1, 1, self.jogador1)
-        escudeiro_p1 = Escudeiro(config_escudeiro_p1, 2, self.jogador1)
-        guerreiro_p1 = Guerreiro(config_guerreiro_p1, 3, self.jogador1)
+        arqueiro_p1 = Arqueiro(config_arqueiro_p1, 1, self.jogador1.id)
+        escudeiro_p1 = Escudeiro(config_escudeiro_p1, 2, self.jogador1.id)
+        guerreiro_p1 = Guerreiro(config_guerreiro_p1, 3, self.jogador1.id)
         # Classe de torre ainda não implementada
-        torre_p1 = Torre(config_torre_p1, 4, self.jogador1)
+        torre_p1 = Torre(config_torre_p1, 4, self.jogador1.id)
 
         # Adiciona personagens ao mapa
         self.mapaAtual.addEntityToPosition(pos_arqueiro_p1, arqueiro_p1)
@@ -61,10 +61,10 @@ class Game:
         pos_torre_p2 = (2, 7)
         config_torre_p2 = {"x": 225 + pos_torre_p2[1] * 70, "y": 135 + pos_torre_p2[0] * 70, "size": (70, 70)}
 
-        arqueiro_p2 = Arqueiro(config_arqueiro_p2, 5, self.jogador2)
-        escudeiro_p2 = Escudeiro(config_escudeiro_p2, 6, self.jogador2)
-        guerreiro_p2 = Guerreiro(config_guerreiro_p2, 7, self.jogador2)
-        torre_p2 = Torre(config_torre_p2, 8, self.jogador2)
+        arqueiro_p2 = Arqueiro(config_arqueiro_p2, 5, self.jogador2.id)
+        escudeiro_p2 = Escudeiro(config_escudeiro_p2, 6, self.jogador2.id)
+        guerreiro_p2 = Guerreiro(config_guerreiro_p2, 7, self.jogador2.id)
+        torre_p2 = Torre(config_torre_p2, 8, self.jogador2.id)
 
         self.mapaAtual.addEntityToPosition(pos_arqueiro_p2, arqueiro_p2)
         self.mapaAtual.addEntityToPosition(pos_escudeiro_p2, escudeiro_p2)

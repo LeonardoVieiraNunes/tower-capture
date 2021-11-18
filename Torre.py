@@ -3,15 +3,15 @@ import pygame
 from Entidade import Entidade
 
 class Torre(Entidade):
-    def __init__(self, gridConfig, id, owner):
-        super().__init__(gridConfig, id, owner)
+    def __init__(self, gridConfig, id, idJogador):
+        super().__init__(gridConfig, id, idJogador)
         image_path ='images/shaded grid.png'
 
         self.vida = 99
-        self.ataque = 99
-        self.defesa = 99
-        self.range_movimentacao = 2
-        self.range_ataque = 4
+        self.ataque = 0
+        self.defesa = 0
+        self.range_movimentacao = 0
+        self.range_ataque = 0
 
         self.image = pygame.image.load(image_path)
         self.size = self.image.get_size()
