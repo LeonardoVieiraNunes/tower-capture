@@ -1,1 +1,4 @@
 pygame
+
+
+# DESTRUIR A TORRE OU MATAR TODO MUNDO

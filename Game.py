@@ -9,6 +9,7 @@ from Torre import Torre
 class Game:
 
     def __init__(self):
+        pygame.init()
         self.SCREENSIZE = {"width":900,"height":500}
         self.WINDOW = pygame.display.set_mode((self.SCREENSIZE["width"],self.SCREENSIZE["height"]))
         self.CLOCK = pygame.time.Clock()

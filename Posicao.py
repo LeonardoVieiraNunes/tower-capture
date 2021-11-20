@@ -1,4 +1,5 @@
 import pygame
+import random
 from Controladora import Controladora
 from Entidade import Entidade
 
@@ -13,8 +14,17 @@ class Posicao():
         self.colorNotOcupied = (100,100,100)
         self.colorOcupied = (0,0,255)
         self.color = self.colorNotOcupied
-        self.image = pygame.transform.scale(
-            pygame.transform.scale(pygame.image.load("./images/tile2.png"),dimensions["size"]), dimensions["size"])
+        self.angles = [0,90,180]
+        self.image = pygame.transform.rotate(
+            pygame.transform.scale(
+                pygame.transform.scale(
+                    pygame.image.load(
+                        "./images/tile3.png"),
+                    dimensions["size"]), 
+                    dimensions["size"]
+                ),
+                random.choice(self.angles)
+            )
         self.rect = self.image.get_rect()
         self.rect.x = dimensions["x"]
         self.rect.y = dimensions["y"]
@@ -58,7 +68,7 @@ class Posicao():
                         if Controladora.GAME.mapaAtual.validForSwapPositions(Controladora.GAME.mapaAtual.posicaoSelecionada,self):
                             Controladora.GAME.mapaAtual.posicaoSelecionada.entidade.movimentar(self)
                 else:
-                    if self.entidade:
+                    if self.entidade and self.entidade.range_movimentacao:
                         self.clicked = True
                         Controladora.GAME.mapaAtual.posicaoSelecionada = self
                         Controladora.GAME.mapaAtual.getValidPositionsForMovement()
