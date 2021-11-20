@@ -7,11 +7,15 @@ class Mapa():
         self.grid = [[None for i in range(9)] for j in range(5)]
         self.gridConfig = {"x":225,"y":135,"size":(70,70)}
         self.mousePos = (0,0)
+        self.tileImage = pygame.transform.scale(
+            pygame.transform.scale(pygame.image.load("./images/tile3.png"),(140,140)), (140,140))
         self.backgroundImage = pygame.image.load("./images/mapaBackground.png")
         self.backgroundImageShop = pygame.transform.scale(
-            pygame.transform.scale(pygame.image.load("./images/tile2.png"),(180,500)), (180,500))
+            pygame.transform.scale(pygame.image.load("./images/shopBackground.png"),(180,500)), (180,500))
         self.posicoesValidas = None
         self.posicaoSelecionada = None
+        self.fontShop = pygame.font.Font(pygame.font.get_default_font(), 13)
+        self.fontGrid = pygame.font.Font(pygame.font.get_default_font(), 20)
         self.setup()
     
     def resetPosicoesValidas(self, posicao = None):
@@ -64,7 +68,8 @@ class Mapa():
         return False
 
     def setup(self):
-        Controladora.GAME.WINDOW.blit(self.backgroundImage, (0, 0))
+        # Controladora.GAME.WINDOW.blit(self.backgroundImage, (0, 0))
+        Controladora.GAME.WINDOW.fill((107,107,107))
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
                 tempConfig = self.gridConfig.copy()
@@ -74,8 +79,43 @@ class Mapa():
         return
     def drawSideBar(self):
         Controladora.GAME.WINDOW.blit(self.backgroundImageShop, (0, 0))
+        
+        text_surface = self.fontShop.render("Posição selecionada:", True, (255,255,255))
+        Controladora.GAME.WINDOW.blit(text_surface, (10, 12))
+        Controladora.GAME.WINDOW.blit(self.tileImage, (10, 30))
+        
+        if self.posicaoSelecionada:
+            text_surface = self.fontShop.render(f"Vida: {self.posicaoSelecionada.entidade.vida}", True, (255,255,255))
+            Controladora.GAME.WINDOW.blit(text_surface, (10, 180))
+            
+            text_surface = self.fontShop.render(f"Defesa: {self.posicaoSelecionada.entidade.defesa}", True, (255,255,255))
+            Controladora.GAME.WINDOW.blit(text_surface, (10, 195))
+            
+            text_surface = self.fontShop.render(f"Movimentação: {self.posicaoSelecionada.entidade.range_movimentacao}", True, (255,255,255))
+            Controladora.GAME.WINDOW.blit(text_surface, (10, 210))
+            
+            text_surface = self.fontShop.render(f"Ataque: {self.posicaoSelecionada.entidade.ataque}", True, (255,255,255))
+            Controladora.GAME.WINDOW.blit(text_surface, (10, 225))
+            
+            Controladora.GAME.WINDOW.blit(pygame.transform.scale(
+                self.posicaoSelecionada.entidade.image, 
+                (self.posicaoSelecionada.entidade.size[0]*3.5,self.posicaoSelecionada.entidade.size[1]*3.5)
+            ), (14, 40))
+        
+        pygame.draw.rect(Controladora.GAME.WINDOW, (107,107,107), (10,440,140,50))
+        text_surface = self.fontGrid.render(f"Pular turno", True, (255,255,255))
+        Controladora.GAME.WINDOW.blit(text_surface, (25, 457))
+
+        
 
     def drawGrid(self):
+        text_surface = self.fontGrid.render("Turno do jogador: 1", True, (255,255,255))
+        Controladora.GAME.WINDOW.blit(text_surface, (225, 115))
+        
+        text_surface = self.fontGrid.render("Turno: 3", True, (255,255,255))
+        Controladora.GAME.WINDOW.blit(text_surface, (770, 115))
+        
+        
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
                 self.grid[i][j].draw()
