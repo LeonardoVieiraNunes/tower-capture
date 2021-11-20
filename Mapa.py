@@ -103,7 +103,7 @@ class Mapa():
             ), (14, 40))
         
         pygame.draw.rect(Controladora.GAME.WINDOW, (107,107,107), (10,440,140,50))
-        text_surface = self.fontGrid.render(f"Pular turno", True, (255,255,255))
+        text_surface = self.fontGrid.render(f"Passar turno", True, (255,255,255))
         Controladora.GAME.WINDOW.blit(text_surface, (25, 457))
 
         
