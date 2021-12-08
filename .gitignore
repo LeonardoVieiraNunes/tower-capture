@@ -3,3 +3,7 @@
 /__pycache__
 /modelagem/*.vpp.lck
 /modelagem/*.vpp.bak*
+/modelagem/.vpprefdata
+/modelagem/tmp
+/modelagem/*.lock
+/modelagem/*.vpp.lck
