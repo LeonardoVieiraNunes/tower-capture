@@ -3,7 +3,7 @@ from Jogador import Jogador
 from Arqueiro import Arqueiro
 from Guerreiro import Guerreiro
 from Escudeiro import Escudeiro
-from Entidade import Entidade
+from Mapa import Mapa
 from Torre import Torre
 
 class Game:
@@ -90,5 +90,3 @@ class Game:
             pygame.display.update()
             
         pygame.quit()
-
-from Mapa import Mapa
