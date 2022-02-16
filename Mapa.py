@@ -56,7 +56,7 @@ class Mapa():
         return False
     
     def swapPositions(self,fromTarget,toTarget):
-        if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao:
+        if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao and toTarget.entidade is None:
             fromTarget.entidade, toTarget.entidade = toTarget.entidade, fromTarget.entidade
 
             if fromTarget.entidade:
