@@ -5,6 +5,7 @@ from Guerreiro import Guerreiro
 from Escudeiro import Escudeiro
 from Mapa import Mapa
 from Torre import Torre
+from Controladora import Controladora
 
 class Game:
 
@@ -15,6 +16,7 @@ class Game:
         self.CLOCK = pygame.time.Clock()
         self.FPS = 24
         self.run = True
+        self.control = None
         self.mapaAtual = None
         self.jogador1 = None
         self.jogador2 = None
@@ -22,7 +24,8 @@ class Game:
     def setup(self):
         pygame.display.set_caption("Tower Capture!")
 
-        self.mapaAtual = Mapa()
+        self.mapaAtual = Mapa(self)
+        self.control = Controladora()
 
         self.jogador1 = Jogador(1)
         self.jogador2 = Jogador(2)
@@ -39,11 +42,11 @@ class Game:
         config_torre_p1 = {"x": 225 + pos_torre_p1[1] * 70, "y": 135 + pos_torre_p1[0] * 70, "size": (70, 70)}
 
         # instancias de personagens
-        arqueiro_p1 = Arqueiro(config_arqueiro_p1, 1, self.jogador1.id)
-        escudeiro_p1 = Escudeiro(config_escudeiro_p1, 2, self.jogador1.id)
-        guerreiro_p1 = Guerreiro(config_guerreiro_p1, 3, self.jogador1.id)
+        arqueiro_p1 = Arqueiro(config_arqueiro_p1, 1, self.jogador1.id, self)
+        escudeiro_p1 = Escudeiro(config_escudeiro_p1, 2, self.jogador1.id, self)
+        guerreiro_p1 = Guerreiro(config_guerreiro_p1, 3, self.jogador1.id, self)
         # Classe de torre ainda não implementada
-        torre_p1 = Torre(config_torre_p1, 4, self.jogador1.id)
+        torre_p1 = Torre(config_torre_p1, 4, self.jogador1.id, self)
 
         # Adiciona personagens ao mapa
         self.mapaAtual.addEntityToPosition(pos_arqueiro_p1, arqueiro_p1)
@@ -62,10 +65,10 @@ class Game:
         pos_torre_p2 = (2, 7)
         config_torre_p2 = {"x": 225 + pos_torre_p2[1] * 70, "y": 135 + pos_torre_p2[0] * 70, "size": (70, 70)}
 
-        arqueiro_p2 = Arqueiro(config_arqueiro_p2, 5, self.jogador2.id)
-        escudeiro_p2 = Escudeiro(config_escudeiro_p2, 6, self.jogador2.id)
-        guerreiro_p2 = Guerreiro(config_guerreiro_p2, 7, self.jogador2.id)
-        torre_p2 = Torre(config_torre_p2, 8, self.jogador2.id)
+        arqueiro_p2 = Arqueiro(config_arqueiro_p2, 5, self.jogador2.id, self)
+        escudeiro_p2 = Escudeiro(config_escudeiro_p2, 6, self.jogador2.id, self)
+        guerreiro_p2 = Guerreiro(config_guerreiro_p2, 7, self.jogador2.id, self)
+        torre_p2 = Torre(config_torre_p2, 8, self.jogador2.id, self)
 
         self.mapaAtual.addEntityToPosition(pos_arqueiro_p2, arqueiro_p2)
         self.mapaAtual.addEntityToPosition(pos_escudeiro_p2, escudeiro_p2)

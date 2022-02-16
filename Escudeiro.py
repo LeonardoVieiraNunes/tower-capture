@@ -3,8 +3,8 @@ import pygame
 from Entidade import Entidade
 
 class Escudeiro(Entidade):
-    def __init__(self, gridConfig, id, idJogador):
-        super().__init__(gridConfig, id, idJogador)
+    def __init__(self, gridConfig, id, idJogador, game):
+        super().__init__(gridConfig, id, idJogador, game)
 
         self.vida = 30
         self.ataque = 20

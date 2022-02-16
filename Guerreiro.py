@@ -3,8 +3,8 @@ import pygame
 from Entidade import Entidade
 
 class Guerreiro(Entidade):
-    def __init__(self, gridConfig, id, idJogador):
-        super().__init__(gridConfig, id, idJogador)
+    def __init__(self, gridConfig, id, idJogador, game):
+        super().__init__(gridConfig, id, idJogador, game)
         image_path ='images/guerreiro_idle.png'
 
         self.vida = 40
