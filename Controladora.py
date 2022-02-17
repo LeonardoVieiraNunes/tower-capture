@@ -3,9 +3,10 @@ import pygame
 class Controladora:
     GAME = None
 
-    def __init__(self):
+    def __init__(self, game):
         self.vez_jogador = 1  # 1 para jogador da esquerda, 2 para jogador da direita
         self.nro_turno = 1
+        self.game = game
 
     def trocar_turno(self):
         self.vez_jogador = 3 - self.vez_jogador

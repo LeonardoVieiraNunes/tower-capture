@@ -7,6 +7,7 @@ class Mapa():
     def __init__(self, game):
         self.grid = [[None for i in range(9)] for j in range(5)]
         self.gridConfig = {"x":225,"y":135,"size":(70,70)}
+        self.rect = pygame.Rect(225, 70*9, 135, 70*5)
         self.mousePos = (0,0)
         self.tileImage = pygame.transform.scale(
             pygame.transform.scale(pygame.image.load("./images/tile3.png"),(140,140)), (140,140))
@@ -111,7 +112,7 @@ class Mapa():
         
 
     def drawGrid(self):
-        text_surface = self.fontGrid.render(f"Turno do jogador: {self.game.control.get_vez_jogador()+1}", True, (255,255,255))
+        text_surface = self.fontGrid.render(f"Turno do jogador: {self.game.control.get_vez_jogador()}", True, (255,255,255))
         self.game.WINDOW.blit(text_surface, (225, 115))
         
         text_surface = self.fontGrid.render(f"Turno: {self.game.control.get_turno()}", True, (255,255,255))
