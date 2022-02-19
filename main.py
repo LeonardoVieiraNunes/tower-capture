@@ -4,4 +4,4 @@ from Game import Game
 
 if __name__ == "__main__":
     interface = InterfaceJogador()
-    interface.setup()
+    interface.game.game_loop()

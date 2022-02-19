@@ -19,6 +19,7 @@ class Controladora:
     def get_turno(self):
         return self.nro_turno
 
-
+    def handle_click(self, mousepos):
+        print(mousepos)
 
 

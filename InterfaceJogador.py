@@ -16,19 +16,16 @@ class InterfaceJogador:
 
     def click(self, event:pygame.event):
         if event.type == pygame.QUIT:
-            return
+            return True
+
         elif event.type == pygame.MOUSEBUTTONDOWN and (
                 event.button == 1 or event.button == 3 or event.button == 2):
             mouse_pos = pygame.mouse.get_pos()
             if self.game.mapaAtual.rect.collidepoint(mouse_pos):
-                print('pog?')
-                self.game.mapaAtual.mouseClick(event)
+                self.game.mapaAtual.handle_click(mouse_pos)
             elif self.game.control.rect_sidebar.collidepoint(mouse_pos):
-                print('cog!')
+                self.game.control.handle_click(mouse_pos)
 
-            self.game.mapaAtual.mouseHover()
-            self.game.mapaAtual.draw()
 
-            pygame.display.update()
 
 

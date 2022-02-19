@@ -1,5 +1,4 @@
 import pygame
-from Jogador import Jogador
 from Arqueiro import Arqueiro
 from Guerreiro import Guerreiro
 from Escudeiro import Escudeiro
@@ -77,15 +76,13 @@ class Game:
             self.CLOCK.tick(self.FPS)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.run = False
-                elif event.type == pygame.MOUSEBUTTONDOWN and (
-                        event.button == 1 or event.button == 3 or event.button == 2):
-                    self.mapaAtual.mouseClick(event)
+                exit = self.interface.click(event)
+                # jogado handle de exit aqui
+                if exit:
+                    pygame.quit()
+                    return
 
             self.mapaAtual.mouseHover()
             self.mapaAtual.draw()
 
             pygame.display.update()
-
-        pygame.quit()

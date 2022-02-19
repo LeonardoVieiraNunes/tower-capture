@@ -129,6 +129,9 @@ class Mapa():
         self.drawSideBar()
         self.drawGrid()
 
+    def handle_click(self, mousepos):
+        print(mousepos)
+
     def mouseClick(self,event):
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
