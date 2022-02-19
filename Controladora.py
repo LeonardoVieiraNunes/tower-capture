@@ -7,11 +7,11 @@ class Controladora:
         self.vez_jogador = 1  # 1 para jogador da esquerda, 2 para jogador da direita
         self.nro_turno = 1
         self.game = game
+        self.rect_sidebar = pygame.Rect(0, 0, 225, 600)
 
     def trocar_turno(self):
         self.vez_jogador = 3 - self.vez_jogador
         self.nro_turno += 1
-
 
     def get_vez_jogador(self):
         return self.vez_jogador

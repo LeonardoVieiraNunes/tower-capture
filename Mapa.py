@@ -7,7 +7,7 @@ class Mapa():
     def __init__(self, game):
         self.grid = [[None for i in range(9)] for j in range(5)]
         self.gridConfig = {"x":225,"y":135,"size":(70,70)}
-        self.rect = pygame.Rect(225, 70*9, 135, 70*5)
+        self.rect = pygame.Rect(225, 135, 70*9, 70*5)
         self.mousePos = (0,0)
         self.tileImage = pygame.transform.scale(
             pygame.transform.scale(pygame.image.load("./images/tile3.png"),(140,140)), (140,140))
