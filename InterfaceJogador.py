@@ -30,7 +30,7 @@ class InterfaceJogador:
                 if self.game.control.rect_sidebar.collidepoint(mouse_pos):
                     self.game.control.handle_click(mouse_pos)
 
-                elif self.game.mapaAtual.rect.collidepoint(mouse_pos) and not self.game.control.partida_em_andamento:
+                elif self.game.mapaAtual.rect.collidepoint(mouse_pos):
                     self.game.mapaAtual.handle_click(mouse_pos)
 
 
