@@ -19,6 +19,7 @@ class Game:
         self.control = None
         self.mapaAtual = None
         self.partida_em_andamento = False
+        self.control = Controladora(self)
 
     def config_entidades(self):
         # posicoes iniciais e configs
@@ -65,12 +66,12 @@ class Game:
 
     def setup(self):
         self.mapaAtual = Mapa(self)
-        self.control = Controladora(self)
         self.config_entidades()
+
 
     def game_loop(self):
         pygame.display.set_caption("Tower Capture!")
-        self.setup()
+
 
         while self.run:
             self.CLOCK.tick(self.FPS)
@@ -82,7 +83,8 @@ class Game:
                     pygame.quit()
                     return
 
-            self.mapaAtual.mouseHover()
-            self.mapaAtual.draw()
+            if self.control.partida_em_andamento:
+                self.mapaAtual.mouseHover()
+                self.mapaAtual.draw()
 
             pygame.display.update()
