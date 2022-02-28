@@ -1,3 +1,4 @@
+from logging import warning
 import pygame
 from Controladora import Controladora
 from Posicao import Posicao
@@ -54,8 +55,21 @@ class Mapa():
 
 
     def validForSwapPositions(self,fromTarget,toTarget):
-        if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao:           
-            return True
+        warningText = ""
+        
+        if not self.game.jogadores[self.game.control.get_vez_jogador()-1].getAndou():
+            if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao:           
+                if toTarget.entidade is None:
+                    return True
+                else:
+                    warningText = "A posição selecionada se encontra OCUPADA!"
+            else:
+                warningText = "A posição selecionada se encontra FORA DO SEU ALCANCE!"
+        else:
+            warningText = "Você ja se movimentou, não é possivel escolher outro personagem!"
+
+        self.game.currentWarning = warningText
+        self.game.shouldWarningInLoop = True
         return False
     
     def swapPositions(self,fromTarget,toTarget):
@@ -67,6 +81,7 @@ class Mapa():
             if toTarget.entidade:
                 toTarget.entidade.gridConfig = toTarget.dimensions
             
+            self.game.jogadores[self.game.control.get_vez_jogador()-1].setAndou()
             return True
         return False
 
@@ -124,23 +139,26 @@ class Mapa():
                 self.grid[i][j].draw()
 
     def draw(self):
+        self.game.WINDOW.fill((107,107,107))
+
         self.mousePos = pygame.mouse.get_pos()
 
         self.drawSideBar()
         self.drawGrid()
 
-    def handle_click(self, mousepos):
-        print(mousepos)
+    def handle_click(self, mousepos, event):
+        self.mouseClick(mousepos, event)
+        self.mouseHover(mousepos)
 
-    def mouseClick(self,event):
+    def mouseClick(self,mousepos,event):
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
-                self.grid[i][j].checkClick(self.mousePos,event)
+                self.grid[i][j].checkClick(mousepos,event)
 
-    def mouseHover(self):
+    def mouseHover(self,mousepos):
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
-                self.grid[i][j].checkHover(self.mousePos)
+                self.grid[i][j].checkHover(mousepos)
 
     def addEntityToPosition(self,pos:tuple,entity):
         self.grid[pos[0]][pos[1]].setEntidade(entity)

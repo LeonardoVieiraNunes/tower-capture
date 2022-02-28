@@ -13,9 +13,10 @@ class Controladora:
         self.partida_em_andamento = False
 
     def trocar_turno(self):
+        self.game.jogadores[self.vez_jogador-1].resetStatus()
         self.vez_jogador = 3 - self.vez_jogador
         self.nro_turno += 1
-
+        
     def get_vez_jogador(self):
         return self.vez_jogador
 
