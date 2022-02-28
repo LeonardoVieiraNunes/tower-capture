@@ -4,6 +4,7 @@ from Guerreiro import Guerreiro
 from Escudeiro import Escudeiro
 from Mapa import Mapa
 from Menu import Menu
+from MenuFinal import MenuFinal
 from Torre import Torre
 from Jogador import Jogador
 from Controladora import Controladora
@@ -21,7 +22,9 @@ class Game:
         self.control = None
         self.mapaAtual = None
         self.menu = Menu(self)
+        self.menuFinal = MenuFinal(self)
         self.partida_em_andamento = False
+        self.partida_com_vencedor = False
         self.control = Controladora(self)
         self.currentWarning = None
         self.shouldWarningInLoop = None
@@ -108,11 +111,8 @@ class Game:
                     pygame.quit()
                     return
 
-            if self.control.partida_em_andamento:
-                # self.mapaAtual.mouseHover()
+            if self.control.partida_em_andamento and not self.control.partida_com_vencedor:
                 self.mapaAtual.draw()
-            else:
-                pass
             
             if display_warning:
                 text_surface = self.fontWarning.render(f"{self.currentWarning}", True, (120,0,0))

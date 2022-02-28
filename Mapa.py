@@ -236,7 +236,7 @@ class Mapa():
             for indexJ, entity in enumerate(line):
                 if entity.entidade != None and (entity.entidade.id % 4 != 0) and entity.entidade.idJogador == playerId:
                     count += 1
-                    
+        # return True
         if count > 0:
             return False
         else:

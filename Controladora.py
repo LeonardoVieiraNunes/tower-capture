@@ -11,6 +11,7 @@ class Controladora:
         self.btn_passar_turno = pygame.Rect(10,440,140,50)
         self.btn_iniciar_jogo = pygame.Rect(0,0,900,600)
         self.partida_em_andamento = False
+        self.partida_com_vencedor = False
 
     def trocar_turno(self):
         
@@ -25,7 +26,9 @@ class Controladora:
             self.game.shouldWarningInLoop = True
         
         if self.game.mapaAtual.checkIfPlayerLost(self.vez_jogador):
-            print(f'Jogador {self.vez_jogador} ganhou!')
+            self.partida_com_vencedor = True
+            
+            self.game.menuFinal.setup({"vencedor":self.game.jogadores[3 - self.vez_jogador-1],"turno":self.nro_turno})
     
     def removerEntidade(self,entidade):
         self.game.mapaAtual.removeEntityByID(entidade.id)
