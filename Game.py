@@ -3,6 +3,7 @@ from Arqueiro import Arqueiro
 from Guerreiro import Guerreiro
 from Escudeiro import Escudeiro
 from Mapa import Mapa
+from Menu import Menu
 from Torre import Torre
 from Controladora import Controladora
 
@@ -18,6 +19,7 @@ class Game:
         self.run = True
         self.control = None
         self.mapaAtual = None
+        self.menu = Menu(self)
         self.partida_em_andamento = False
         self.control = Controladora(self)
 
@@ -72,7 +74,6 @@ class Game:
     def game_loop(self):
         pygame.display.set_caption("Tower Capture!")
 
-
         while self.run:
             self.CLOCK.tick(self.FPS)
 
@@ -84,7 +85,10 @@ class Game:
                     return
 
             if self.control.partida_em_andamento:
-                self.mapaAtual.mouseHover()
+                # self.mapaAtual.mouseHover()
                 self.mapaAtual.draw()
+            else:
+                pass
+                
 
             pygame.display.update()

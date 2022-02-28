@@ -124,23 +124,27 @@ class Mapa():
                 self.grid[i][j].draw()
 
     def draw(self):
+        self.game.WINDOW.fill((107,107,107))
+
         self.mousePos = pygame.mouse.get_pos()
 
         self.drawSideBar()
         self.drawGrid()
 
-    def handle_click(self, mousepos):
+    def handle_click(self, mousepos, event):
         print(mousepos)
+        self.mouseClick(mousepos, event)
+        self.mouseHover(mousepos)
 
-    def mouseClick(self,event):
+    def mouseClick(self,mousepos,event):
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
-                self.grid[i][j].checkClick(self.mousePos,event)
+                self.grid[i][j].checkClick(mousepos,event)
 
-    def mouseHover(self):
+    def mouseHover(self,mousepos):
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
-                self.grid[i][j].checkHover(self.mousePos)
+                self.grid[i][j].checkHover(mousepos)
 
     def addEntityToPosition(self,pos:tuple,entity):
         self.grid[pos[0]][pos[1]].setEntidade(entity)
