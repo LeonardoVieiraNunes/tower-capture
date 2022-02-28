@@ -22,7 +22,7 @@ class Entidade():
         self.game.mapaAtual.resetPosicoesValidas(posicao)
 
     def draw(self):
-        self.game.WINDOW.blit(self.image, (self.gridConfig["x"],self.gridConfig["y"]))
-
+        self.game.WINDOW.blit(self.image, (self.gridConfig["x"],self.gridConfig["y"]))            
+        
     def getId(self):
         return self.id

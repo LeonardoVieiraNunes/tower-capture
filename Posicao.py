@@ -39,6 +39,10 @@ class Posicao():
                 self.color = (100,100,100)
         else:
             self.color = (100,100,100)
+        
+        if self.entidade:
+            if self.game.control.get_vez_jogador() == self.entidade.idJogador:
+                self.color = (182,182,182)
 
         self.game.WINDOW.blit(self.image,(self.rect.x,self.rect.y))
         pygame.draw.rect(self.game.WINDOW,self.color,(self.dimensions["x"],self.dimensions["y"],self.dimensions["size"][0],self.dimensions["size"][1]),1)
@@ -75,7 +79,9 @@ class Posicao():
                             self.game.mapaAtual.posicaoSelecionada = self
                             self.game.mapaAtual.getValidPositionsForMovement()
                         else:
-                            print('Esse personagem nao eh seu, seu vagabundo!')
+                            warningText = "Esse personagem nao eh seu, seu vagabundo!"
+                            self.game.currentWarning = warningText
+                            self.game.shouldWarningInLoop = True
 
     
     def checkHover(self, mousePos):

@@ -1,3 +1,4 @@
+from logging import warning
 import pygame
 from Controladora import Controladora
 from Posicao import Posicao
@@ -54,8 +55,21 @@ class Mapa():
 
 
     def validForSwapPositions(self,fromTarget,toTarget):
-        if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao:           
-            return True
+        warningText = ""
+        
+        if not self.game.jogadores[self.game.control.get_vez_jogador()-1].getAndou():
+            if self.posicoesValidas[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_movimentacao:           
+                if toTarget.entidade is None:
+                    return True
+                else:
+                    warningText = "A posição selecionada se encontra OCUPADA!"
+            else:
+                warningText = "A posição selecionada se encontra FORA DO SEU ALCANCE!"
+        else:
+            warningText = "Você ja se movimentou, não é possivel escolher outro personagem!"
+
+        self.game.currentWarning = warningText
+        self.game.shouldWarningInLoop = True
         return False
     
     def swapPositions(self,fromTarget,toTarget):
@@ -67,6 +81,7 @@ class Mapa():
             if toTarget.entidade:
                 toTarget.entidade.gridConfig = toTarget.dimensions
             
+            self.game.jogadores[self.game.control.get_vez_jogador()-1].setAndou()
             return True
         return False
 
@@ -132,7 +147,6 @@ class Mapa():
         self.drawGrid()
 
     def handle_click(self, mousepos, event):
-        print(mousepos)
         self.mouseClick(mousepos, event)
         self.mouseHover(mousepos)
 

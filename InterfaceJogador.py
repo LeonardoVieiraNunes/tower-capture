@@ -1,13 +1,5 @@
 import pygame
 from Game import Game
-from Jogador import Jogador
-from Arqueiro import Arqueiro
-from Guerreiro import Guerreiro
-from Escudeiro import Escudeiro
-from Mapa import Mapa
-from Torre import Torre
-from Controladora import Controladora
-
 
 class InterfaceJogador:
 
