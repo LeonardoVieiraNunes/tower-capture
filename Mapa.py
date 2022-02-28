@@ -17,17 +17,22 @@ class Mapa():
             pygame.transform.scale(pygame.image.load("./images/shopBackground.png"),(180,500)), (180,500))
         self.game = game
         self.posicoesValidas = None
+        self.posicoesValidasAtaque = None
         self.posicaoSelecionada = None
+        self.posicaoSelecionadaTempAtaque = None
         self.fontShop = pygame.font.Font(pygame.font.get_default_font(), 13)
-        self.fontGrid = pygame.font.Font(pygame.font.get_default_font(), 20)
+        self.fontGrid = pygame.font.Font(pygame.font.get_default_font(), 18)
         self.setup()
     
     def resetPosicoesValidas(self, posicao = None):
         self.game.mapaAtual.posicaoSelecionada.clicked = False
-        self.game.mapaAtual.posicaoSelecionada = None
-        if posicao:
-            posicao.clicked = False
+        self.game.mapaAtual.posicaoSelecionada = posicao
+        
         self.posicoesValidas = None
+        self.posicoesValidasAtaque = None
+                
+        if posicao:
+            self.game.mapaAtual.getValidPositionsForAttack()
 
     def getValidPositionsForMovement(self):
         posicaoTemp = self.game.mapaAtual.posicaoSelecionada
@@ -51,7 +56,31 @@ class Mapa():
                             print("Exception")
             posicoesValidas = posicoesValidasTemp
 
-        self.posicoesValidas = posicoesValidas              
+        self.posicoesValidas = posicoesValidas
+    
+    def getValidPositionsForAttack(self):
+        posicaoTemp = self.game.mapaAtual.posicaoSelecionada
+        posicoesValidas = [[9 for i in range(9)] for j in range(5)]
+        for moviRange in range(1,posicaoTemp.entidade.range_ataque+1):
+            posicoesValidasTemp = posicoesValidas.copy()
+            posicoesValidasTemp[posicaoTemp.matrixLocation[0]][posicaoTemp.matrixLocation[1]] = 0
+            for indexI,i  in enumerate(posicoesValidasTemp):
+                for indexJ,j  in enumerate(i):
+                    if j == moviRange-1:
+                        try:
+                            if indexI+1 < 5 and posicoesValidasTemp[indexI+1][indexJ]:
+                                posicoesValidasTemp[indexI+1][indexJ] = moviRange
+                            if indexI-1 >= 0 and posicoesValidasTemp[indexI-1][indexJ]:
+                                posicoesValidasTemp[indexI-1][indexJ] = moviRange
+                            if indexJ+1 < 9 and posicoesValidasTemp[indexI][indexJ+1]:
+                                posicoesValidasTemp[indexI][indexJ+1] = moviRange
+                            if indexJ-1 >= 0 and posicoesValidasTemp[indexI][indexJ-1]:
+                                posicoesValidasTemp[indexI][indexJ-1] = moviRange
+                        except Exception:
+                            print("Exception")
+            posicoesValidas = posicoesValidasTemp
+
+        self.posicoesValidasAtaque = posicoesValidas           
 
 
     def validForSwapPositions(self,fromTarget,toTarget):
@@ -62,11 +91,35 @@ class Mapa():
                 if toTarget.entidade is None:
                     return True
                 else:
-                    warningText = "A posição selecionada se encontra OCUPADA!"
+                    if toTarget.entidade.idJogador != self.game.jogadores[self.game.control.get_vez_jogador()-1].id:
+                        fromTarget.entidade.atacar(toTarget)
+                    else:
+                        warningText = "A posição selecionada se encontra OCUPADA!"
             else:
                 warningText = "A posição selecionada se encontra FORA DO SEU ALCANCE!"
         else:
             warningText = "Você ja se movimentou, não é possivel escolher outro personagem!"
+
+        self.game.currentWarning = warningText
+        self.game.shouldWarningInLoop = True
+        return False
+    
+    def validForAttack(self,fromTarget,toTarget):
+        warningText = ""
+        
+        if not self.game.jogadores[self.game.control.get_vez_jogador()-1].getAtacou():
+            if self.posicoesValidasAtaque[toTarget.matrixLocation[0]][toTarget.matrixLocation[1]] <= fromTarget.entidade.range_ataque:           
+                if toTarget.entidade == None:
+                    warningText = "Não existe um alvo a ser atacado nesta posição!"
+                else:
+                    if toTarget.entidade.idJogador != self.game.jogadores[self.game.control.get_vez_jogador()-1].id:
+                        return True
+                    else:
+                        warningText = "A posição de ataque selecionada é seu aliado!"
+            else:
+                warningText = "Ataque não realizado, FORA DO SEU ALCANCE!"
+        else:
+            warningText = "Não é possivel realizar novos ataques, PASSAR TURNO!"
 
         self.game.currentWarning = warningText
         self.game.shouldWarningInLoop = True
@@ -84,6 +137,11 @@ class Mapa():
             self.game.jogadores[self.game.control.get_vez_jogador()-1].setAndou()
             return True
         return False
+    
+    def realizarAtaque(self,posicao):        
+        posicao.entidade.receberDano(self.posicaoSelecionada.entidade.ataque)
+        self.game.jogadores[self.game.control.get_vez_jogador()-1].setAtacou()
+        self.game.control.trocar_turno()
 
     def setup(self):
         # self.game.WINDOW.blit(self.backgroundImage, (0, 0))
@@ -114,6 +172,9 @@ class Mapa():
             
             text_surface = self.fontShop.render(f"Ataque: {self.posicaoSelecionada.entidade.ataque}", True, (255,255,255))
             self.game.WINDOW.blit(text_surface, (10, 225))
+            
+            text_surface = self.fontShop.render(f"Alcance de ataque: {self.posicaoSelecionada.entidade.range_ataque}", True, (255,255,255))
+            self.game.WINDOW.blit(text_surface, (10, 240))
             
             self.game.WINDOW.blit(pygame.transform.scale(
                 self.posicaoSelecionada.entidade.image, 
@@ -162,3 +223,21 @@ class Mapa():
 
     def addEntityToPosition(self,pos:tuple,entity):
         self.grid[pos[0]][pos[1]].setEntidade(entity)
+    
+    def removeEntityByID(self,id):
+        for indexI, line in enumerate(self.grid):
+            for indexJ, entity in enumerate(line):
+                if entity.entidade != None and entity.entidade.id == id:
+                    self.grid[indexI][indexJ].entidade = None
+                    
+    def checkIfPlayerLost(self, playerId):
+        count = 0
+        for indexI, line in enumerate(self.grid):
+            for indexJ, entity in enumerate(line):
+                if entity.entidade != None and (entity.entidade.id % 4 != 0) and entity.entidade.idJogador == playerId:
+                    count += 1
+                    
+        if count > 0:
+            return False
+        else:
+            return True

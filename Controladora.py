@@ -13,9 +13,22 @@ class Controladora:
         self.partida_em_andamento = False
 
     def trocar_turno(self):
-        self.game.jogadores[self.vez_jogador-1].resetStatus()
-        self.vez_jogador = 3 - self.vez_jogador
-        self.nro_turno += 1
+        
+        if self.game.jogadores[self.vez_jogador-1].getAndou() or self.game.jogadores[self.vez_jogador-1].getAtacou():
+            self.game.jogadores[self.vez_jogador-1].resetStatus()
+            self.vez_jogador = 3 - self.vez_jogador
+            self.nro_turno += 1
+            self.game.mapaAtual.resetPosicoesValidas()
+        else:
+            warningText = "Você precisa realizar alguma ação antes de passar turno!"
+            self.game.currentWarning = warningText
+            self.game.shouldWarningInLoop = True
+        
+        if self.game.mapaAtual.checkIfPlayerLost(self.vez_jogador):
+            print(f'Jogador {self.vez_jogador} ganhou!')
+    
+    def removerEntidade(self,entidade):
+        self.game.mapaAtual.removeEntityByID(entidade.id)
         
     def get_vez_jogador(self):
         return self.vez_jogador

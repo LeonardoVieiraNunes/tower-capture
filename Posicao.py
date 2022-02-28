@@ -40,6 +40,11 @@ class Posicao():
         else:
             self.color = (100,100,100)
         
+        
+        if self.game.mapaAtual.posicoesValidasAtaque:
+            if self.game.mapaAtual.posicoesValidasAtaque[self.matrixLocation[0]][self.matrixLocation[1]] != 9:
+                self.color = (255,0,0)
+        
         if self.entidade:
             if self.game.control.get_vez_jogador() == self.entidade.idJogador:
                 self.color = (182,182,182)
@@ -70,14 +75,19 @@ class Posicao():
                         Posicao.casaSelecionada = None
                         self.game.mapaAtual.resetPosicoesValidas()
                     else:
-                        if self.game.mapaAtual.validForSwapPositions(self.game.mapaAtual.posicaoSelecionada,self):
-                            self.game.mapaAtual.posicaoSelecionada.entidade.movimentar(self)
+                        if not self.game.jogadores[self.game.control.get_vez_jogador()-1].getAndou():
+                            if self.game.mapaAtual.validForSwapPositions(self.game.mapaAtual.posicaoSelecionada,self):
+                                self.game.mapaAtual.posicaoSelecionada.entidade.movimentar(self)
+                        else:
+                            if self.game.mapaAtual.validForAttack(self.game.mapaAtual.posicaoSelecionada,self):
+                                self.game.mapaAtual.posicaoSelecionada.entidade.atacar(self)
                 else:
                     if self.entidade and self.entidade.range_movimentacao:
                         self.clicked = True
                         if self.entidade.idJogador == self.game.control.get_vez_jogador():
                             self.game.mapaAtual.posicaoSelecionada = self
                             self.game.mapaAtual.getValidPositionsForMovement()
+                            self.game.mapaAtual.getValidPositionsForAttack()
                         else:
                             warningText = "Esse personagem nao eh seu, seu vagabundo!"
                             self.game.currentWarning = warningText

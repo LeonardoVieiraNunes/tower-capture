@@ -10,7 +10,7 @@ class Escudeiro(Entidade):
         self.ataque = 20
         self.defesa = 30
         self.range_movimentacao = 2
-        self.range_ataque = 2
+        self.range_ataque = 1
 
         image_path ='images/escudeiro_idle.png'
         self.image = pygame.image.load(image_path)
