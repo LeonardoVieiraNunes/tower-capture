@@ -48,7 +48,16 @@ class Entidade():
     def movimentar(self, posicao):
         self.game.mapaAtual.swapPositions(self.game.mapaAtual.posicaoSelecionada,posicao)
         self.game.mapaAtual.resetPosicoesValidas(posicao)
-
+    
+    def atacar(self, posicao):
+        self.game.mapaAtual.realizarAtaque(posicao)
+    
+    def receberDano(self,dano):
+        self.vida -= dano
+        
+        if self.vida <= 0:
+            self.game.control.removerEntidade(self)
+        
     def draw(self):
         self.game.WINDOW.blit(self.image, (self.gridConfig["x"],self.gridConfig["y"]))            
         

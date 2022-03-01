@@ -7,6 +7,9 @@ from Menu import Menu
 from Entidade import Entidade
 # from Torre import Torre
 # from Jogador import Jogador
+from MenuFinal import MenuFinal
+from Torre import Torre
+from Jogador import Jogador
 from Controladora import Controladora
 
 class Game:
@@ -22,7 +25,9 @@ class Game:
         self.control = None
         self.mapaAtual = None
         self.menu = Menu(self)
+        self.menuFinal = MenuFinal(self)
         self.partida_em_andamento = False
+        self.partida_com_vencedor = False
         self.control = Controladora(self)
         self.currentWarning = None
         self.shouldWarningInLoop = None
@@ -46,7 +51,7 @@ class Game:
         escudeiro_p1 = Entidade(config_escudeiro_p1, 2, 1, self, "escudeiro")
         guerreiro_p1 = Entidade(config_guerreiro_p1, 3, 1, self, "guerreiro")
         torre_p1 = Entidade(config_torre_p1, 4, 1, self, "torre")
-        
+
         pos_arqueiro_p2 = (1, 6)
         config_arqueiro_p2 = {"x": 225 + pos_arqueiro_p2[1] * 70, "y": 135 + pos_arqueiro_p2[0] * 70, "size": (70, 70)}
         pos_escudeiro_p2 = (2, 5)
@@ -60,7 +65,7 @@ class Game:
         escudeiro_p2 = Entidade(config_escudeiro_p2, 6, 2, self, 'escudeiro')
         guerreiro_p2 = Entidade(config_guerreiro_p2, 7, 2, self, 'guerreiro')
         torre_p2 = Entidade(config_torre_p2, 8, 2, self, 'torre')
-        
+
         # Adiciona personagens ao mapa
         self.mapaAtual.addEntityToPosition(pos_arqueiro_p1, arqueiro_p1)
         self.mapaAtual.addEntityToPosition(pos_escudeiro_p1, escudeiro_p1)
@@ -71,7 +76,7 @@ class Game:
         self.mapaAtual.addEntityToPosition(pos_escudeiro_p2, escudeiro_p2)
         self.mapaAtual.addEntityToPosition(pos_guerreiro_p2, guerreiro_p2)
         self.mapaAtual.addEntityToPosition(pos_torre_p2, torre_p2)
-        
+
 
     def setup(self):
         self.mapaAtual = Mapa(self)
@@ -97,11 +102,8 @@ class Game:
                     pygame.quit()
                     return
 
-            if self.control.partida_em_andamento:
-                # self.mapaAtual.mouseHover()
+            if self.control.partida_em_andamento and not self.control.partida_com_vencedor:
                 self.mapaAtual.draw()
-            else:
-                pass
             
             if display_warning:
                 text_surface = self.fontWarning.render(f"{self.currentWarning}", True, (120,0,0))

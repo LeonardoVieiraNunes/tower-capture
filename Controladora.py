@@ -11,13 +11,32 @@ class Controladora:
         self.btn_passar_turno = pygame.Rect(10,440,140,50)
         self.btn_iniciar_jogo = pygame.Rect(0,0,900,600)
         self.partida_em_andamento = False
+        self.partida_com_vencedor = False
 
     def trocar_turno(self):
         # self.game.jogadores[self.vez_jogador-1].resetStatus()
         self.vez_jogador = 3 - self.vez_jogador
         self.nro_turno += 1
         self.game.mapaAtual.estadoJogada = 0
-        
+
+        if self.game.jogadores[self.vez_jogador-1].getAndou() or self.game.jogadores[self.vez_jogador-1].getAtacou():
+            self.game.jogadores[self.vez_jogador-1].resetStatus()
+            self.vez_jogador = 3 - self.vez_jogador
+            self.nro_turno += 1
+            self.game.mapaAtual.resetPosicoesValidas()
+        else:
+            warningText = "Você precisa realizar alguma ação antes de passar turno!"
+            self.game.currentWarning = warningText
+            self.game.shouldWarningInLoop = True
+
+        if self.game.mapaAtual.checkIfPlayerLost(self.vez_jogador):
+            self.partida_com_vencedor = True
+
+            self.game.menuFinal.setup({"vencedor":self.game.jogadores[3 - self.vez_jogador-1],"turno":self.nro_turno})
+
+    def removerEntidade(self,entidade):
+        self.game.mapaAtual.removeEntityByID(entidade.id)
+
     def get_vez_jogador(self):
         return self.vez_jogador
 

@@ -43,6 +43,11 @@ class Posicao():
         else:
             self.color = (100,100,100)
         
+
+        if self.game.mapaAtual.posicoesValidasAtaque:
+            if self.game.mapaAtual.posicoesValidasAtaque[self.matrixLocation[0]][self.matrixLocation[1]] != 9:
+                self.color = (255,0,0)
+
         if self.entidade:
             if self.game.control.get_vez_jogador() == self.entidade.idJogador:
                 self.color = (182,182,182)
