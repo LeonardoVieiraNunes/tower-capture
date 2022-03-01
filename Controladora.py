@@ -1,7 +1,7 @@
 import pygame
 
 class Controladora:
-    GAME = None
+
 
     def __init__(self, game):
         self.vez_jogador = 1  # 1 para jogador da esquerda, 2 para jogador da direita
@@ -13,9 +13,10 @@ class Controladora:
         self.partida_em_andamento = False
 
     def trocar_turno(self):
-        self.game.jogadores[self.vez_jogador-1].resetStatus()
+        # self.game.jogadores[self.vez_jogador-1].resetStatus()
         self.vez_jogador = 3 - self.vez_jogador
         self.nro_turno += 1
+        self.game.mapaAtual.estadoJogada = 0
         
     def get_vez_jogador(self):
         return self.vez_jogador

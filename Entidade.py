@@ -1,8 +1,16 @@
 import pygame
 from Controladora import Controladora
 
+config_personagens = {
+        'arqueiro': {'vida':20, 'ataque':15, 'defesa':10, 'rangeAtaque':3, 'rangeMovimentacao':2},
+        "guerreiro":{'vida':25, 'ataque':20, 'defesa':10, 'rangeAtaque':1, 'rangeMovimentacao':3},
+        "escudeiro":{'vida':30, 'ataque':10, 'defesa':30, 'rangeAtaque':1, 'rangeMovimentacao':1},
+        'torre':{'vida':100, 'ataque':0, 'defesa':20, 'rangeAtaque':0, 'rangeMovimentacao':0}
+
+    }
+
 class Entidade():
-    def __init__(self, gridConfig, id, idJogador, game):
+    def __init__(self, gridConfig, id, idJogador, game, tipo_personagem):
         super().__init__()
         self.idJogador = idJogador
         self.id = id
@@ -12,10 +20,30 @@ class Entidade():
         self.color = self.originalColor
 
         # usa imagem de fundo transparente como default ( não fica totalmente transparente mas blz)
-        image_path = "images/shaded grid.png"
-        self.image = pygame.image.load(image_path)
+        self.image_path = "images/shaded grid.png"
+
+        self.vida = None
+        self.ataque = None
+        self.defesa = None
+        self.range_movimentacao = None
+        self.range_ataque = None
+        self.get_atributos(tipo_personagem)
+
+        self.image = pygame.image.load(self.image_path)
         self.size = self.image.get_size()
-        self.image = pygame.transform.scale(self.image, (int(self.size[0] * 2.1), int(self.size[1] * 2)))
+        if 'torre' in self.image_path:
+            self.image = pygame.transform.scale(self.image, (int(self.size[0] * 4.3), int(self.size[1] * 4.4)))
+        else:
+            self.image = pygame.transform.scale(self.image, (int(self.size[0] * 2.1), int(self.size[1] * 2)))
+
+    def get_atributos(self, tipo):
+        self.image_path = f'images/{tipo}.png'
+
+        self.vida = config_personagens[tipo]['vida']
+        self.ataque = config_personagens[tipo]['vida']
+        self.defesa = config_personagens[tipo]['vida']
+        self.range_movimentacao = config_personagens[tipo]['rangeMovimentacao']
+        self.range_ataque = config_personagens[tipo]['rangeAtaque']
     
     def movimentar(self, posicao):
         self.game.mapaAtual.swapPositions(self.game.mapaAtual.posicaoSelecionada,posicao)
