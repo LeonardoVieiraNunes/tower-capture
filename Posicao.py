@@ -1,6 +1,5 @@
 import pygame
 import random
-from Controladora import Controladora
 from Entidade import Entidade
 
 
@@ -56,11 +55,6 @@ class Posicao():
         pygame.draw.rect(self.game.WINDOW,self.color,(self.dimensions["x"],self.dimensions["y"],self.dimensions["size"][0],self.dimensions["size"][1]),1)
         if self.entidade:
             self.entidade.draw()
-
-    def checkCollision(self,mousePos):
-        if(self.rect.collidepoint(mousePos)):
-            return True
-        return False
 
     def setEntidade(self,entidade:Entidade):
         self.entidade = entidade

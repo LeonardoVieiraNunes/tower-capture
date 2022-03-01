@@ -1,11 +1,10 @@
 import pygame
-from Controladora import Controladora
 
 config_personagens = {
         'arqueiro': {'vida':20, 'ataque':15, 'defesa':10, 'rangeAtaque':3, 'rangeMovimentacao':2},
         "guerreiro":{'vida':25, 'ataque':20, 'defesa':10, 'rangeAtaque':1, 'rangeMovimentacao':3},
-        "escudeiro":{'vida':30, 'ataque':10, 'defesa':30, 'rangeAtaque':1, 'rangeMovimentacao':1},
-        'torre':{'vida':100, 'ataque':0, 'defesa':20, 'rangeAtaque':0, 'rangeMovimentacao':0}
+        "escudeiro":{'vida':30, 'ataque':10, 'defesa':30, 'rangeAtaque':1, 'rangeMovimentacao':2},
+        'torre':{'vida':100, 'ataque':0, 'defesa':0, 'rangeAtaque':0, 'rangeMovimentacao':0}
 
     }
 
@@ -27,6 +26,7 @@ class Entidade():
         self.defesa = None
         self.range_movimentacao = None
         self.range_ataque = None
+        self.tipo = tipo_personagem
         self.get_atributos(tipo_personagem)
 
         self.image = pygame.image.load(self.image_path)
@@ -40,24 +40,11 @@ class Entidade():
         self.image_path = f'images/{tipo}.png'
 
         self.vida = config_personagens[tipo]['vida']
-        self.ataque = config_personagens[tipo]['vida']
-        self.defesa = config_personagens[tipo]['vida']
+        self.ataque = config_personagens[tipo]['ataque']
+        self.defesa = config_personagens[tipo]['defesa']
         self.range_movimentacao = config_personagens[tipo]['rangeMovimentacao']
         self.range_ataque = config_personagens[tipo]['rangeAtaque']
     
-    def movimentar(self, posicao):
-        self.game.mapaAtual.swapPositions(self.game.mapaAtual.posicaoSelecionada,posicao)
-        self.game.mapaAtual.resetPosicoesValidas(posicao)
-    
-    def atacar(self, posicao):
-        self.game.mapaAtual.realizarAtaque(posicao)
-    
-    def receberDano(self,dano):
-        self.vida -= dano
-        
-        if self.vida <= 0:
-            self.game.control.removerEntidade(self)
-        
     def draw(self):
         self.game.WINDOW.blit(self.image, (self.gridConfig["x"],self.gridConfig["y"]))            
         

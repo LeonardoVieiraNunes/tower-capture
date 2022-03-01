@@ -1,4 +1,5 @@
 import pygame
+from Entidade import Entidade
 
 class Controladora:
 
@@ -12,30 +13,34 @@ class Controladora:
         self.btn_iniciar_jogo = pygame.Rect(0,0,900,600)
         self.partida_em_andamento = False
         self.partida_com_vencedor = False
+        self.vencedor = None
+        self.score = {
+            1:3,
+            2:3
+        }
 
     def trocar_turno(self):
-        # self.game.jogadores[self.vez_jogador-1].resetStatus()
-        self.vez_jogador = 3 - self.vez_jogador
-        self.nro_turno += 1
-        self.game.mapaAtual.estadoJogada = 0
-
-        if self.game.jogadores[self.vez_jogador-1].getAndou() or self.game.jogadores[self.vez_jogador-1].getAtacou():
-            self.game.jogadores[self.vez_jogador-1].resetStatus()
+        if self.game.mapaAtual.estadoJogada > 1:
             self.vez_jogador = 3 - self.vez_jogador
             self.nro_turno += 1
+            self.game.mapaAtual.estadoJogada = 0
             self.game.mapaAtual.resetPosicoesValidas()
         else:
             warningText = "Você precisa realizar alguma ação antes de passar turno!"
             self.game.currentWarning = warningText
             self.game.shouldWarningInLoop = True
 
-        if self.game.mapaAtual.checkIfPlayerLost(self.vez_jogador):
-            self.partida_com_vencedor = True
-
-            self.game.menuFinal.setup({"vencedor":self.game.jogadores[3 - self.vez_jogador-1],"turno":self.nro_turno})
+        if self.partida_com_vencedor:
+            self.game.tela_final({"vencedor":3 - self.vez_jogador,"turno":self.nro_turno})
 
     def removerEntidade(self,entidade):
-        self.game.mapaAtual.removeEntityByID(entidade.id)
+        self.game.mapaAtual.removerEntidadePorID(entidade.id)
+        if entidade.tipo == 'torre':
+            self.partida_com_vencedor = True
+        else:
+            self.score[3 - self.get_vez_jogador()] -=1
+            if self.score[3 - self.get_vez_jogador()] ==0:
+                self.partida_com_vencedor = True
 
     def get_vez_jogador(self):
         return self.vez_jogador
@@ -44,14 +49,23 @@ class Controladora:
         return self.nro_turno
 
     def handle_click(self, mousepos):
-        print("Input passado para controladora")
         if not self.partida_em_andamento and self.btn_iniciar_jogo.collidepoint(mousepos):
             self.game.setup()
             self.partida_em_andamento = True
-            print('Iniciar partida')
 
         elif self.partida_em_andamento and self.btn_passar_turno.collidepoint(mousepos):
             self.trocar_turno()
-            print('trocar turno')
+
+    def calcular_dano(self, atacante:Entidade, defensor:Entidade):
+        dano_em_defesa = defensor.defesa - atacante.ataque
+        if dano_em_defesa < 0:
+            defensor.defesa = 0
+            defensor.vida -= abs(dano_em_defesa)
+        else:
+            defensor.defesa = dano_em_defesa
+
+        if defensor.vida <= 0:
+            self.removerEntidade(defensor)
+
 
 
