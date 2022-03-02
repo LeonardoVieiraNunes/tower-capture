@@ -58,9 +58,9 @@ class Controladora:
 
     def calcular_dano(self, atacante:Entidade, defensor:Entidade):
         dano_em_defesa = defensor.defesa - atacante.ataque
+        defensor.vida -= abs(dano_em_defesa)
         if dano_em_defesa < 0:
             defensor.defesa = 0
-            defensor.vida -= abs(dano_em_defesa)
         else:
             defensor.defesa = dano_em_defesa
 

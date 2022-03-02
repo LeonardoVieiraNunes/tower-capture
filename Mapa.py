@@ -62,10 +62,7 @@ class Mapa():
                 if toTarget.entidade is None:
                     return True
                 else:
-                    if toTarget.entidade.idJogador != self.game.jogadores[self.game.control.get_vez_jogador()-1].id:
-                        fromTarget.entidade.atacar(toTarget)
-                    else:
-                        warningText = "A posição selecionada se encontra OCUPADA!"
+                    warningText = "A posição selecionada se encontra OCUPADA!"
             else:
                 warningText = "A posição selecionada se encontra FORA DO SEU ALCANCE!"
         else:
